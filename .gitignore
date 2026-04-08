@@ -1,0 +1,8 @@
+build/
+dist/
+nbproject/private/
+*.war
+*.jar
+*.class
+.netbeans_automatic_build
+.netbeans_update_resources
