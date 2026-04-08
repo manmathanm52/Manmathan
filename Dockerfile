@@ -1,18 +1,23 @@
-# Step 1: NetBeans Project Build (using Ant and Java 8)
-FROM frekele/ant:1.10.3-jdk8 AS builder
+FROM tomcat:9.0-jdk8
 WORKDIR /app
 COPY . .
-# Run NetBeans ant build (this creates dist/EMAIL.war)
-RUN ant -f build.xml clean dist
 
-# Step 2: Deploy to Tomcat Server
-FROM tomcat:9.0-jdk8-openjdk
-# Remove default Tomcat apps to keep it clean
-RUN rm -rf /usr/local/tomcat/webapps/ROOT
-# Copy the compiled war file from Step 1 as ROOT.war so it runs on main URL ( / )
-COPY --from=builder /app/dist/EMAIL.war /usr/local/tomcat/webapps/ROOT.war
+# Create target classes directory
+RUN mkdir -p web/WEB-INF/classes
 
-# Fix NetBeans old driver issue by injecting the latest MySQL 8 Connector directly into Tomcat
+# Compile all Java source code using Tomcat's built-in Java EE libraries!
+# This bypasses NetBeans' missing server path errors entirely.
+RUN javac -cp "web/WEB-INF/lib/*:/usr/local/tomcat/lib/*" \
+    -d web/WEB-INF/classes \
+    src/java/dataset/*.java src/java/spam/*.java
+
+# Clear out the default Tomcat ROOT application
+RUN rm -rf /usr/local/tomcat/webapps/ROOT && mkdir /usr/local/tomcat/webapps/ROOT
+
+# Copy the completely compiled web folder over to Tomcat's active ROOT
+RUN cp -r web/* /usr/local/tomcat/webapps/ROOT/
+
+# Provide MySQL 8 Connector directly to Tomcat fixing the 1251 Authentication Error
 RUN wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar -O /usr/local/tomcat/lib/mysql-connector-j.jar
 
 EXPOSE 8080
