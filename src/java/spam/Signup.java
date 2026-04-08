@@ -48,7 +48,7 @@ public class Signup extends HttpServlet {
         try {
             AesEncryption aes=new AesEncryption();
             /* TODO output your page here. You may use following sample code. */
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true","avnadmin",System.getenv("DB_PASSWORD"));
 st=con.createStatement();
 String t1=request.getParameter("t1");
