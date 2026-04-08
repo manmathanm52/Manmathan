@@ -248,7 +248,7 @@ else
     RequestDispatcher rd=request.getRequestDispatcher("Send.jsp");
     rd.forward(request, response);
 }
-        } catch (Exception antigravityException) { out.println("<br><br><h3>Application Error:</h3><pre>"); antigravityException.printStackTrace(out); out.println("</pre>"); } finally {            
+        } finally {            
             out.close();
         }
     }

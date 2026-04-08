@@ -6,7 +6,7 @@ COPY . .
 RUN mkdir -p web/WEB-INF/classes web/WEB-INF/lib
 
 # Download missing Apache Commons IO library required by sends.java
-RUN wget https://repo1.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar -O web/WEB-INF/lib/commons-io-2.4.jar
+
 
 # Compile all Java source code using Tomcat's built-in Java EE libraries!
 # This bypasses NetBeans' missing server path errors entirely.
