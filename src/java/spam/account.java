@@ -83,7 +83,13 @@ else
     RequestDispatcher rd=request.getRequestDispatcher("accounts.jsp");
     rd.forward(request, response);
 }
-        } finally {            
+        } catch (Exception ex) {
+            request.setAttribute("chk", "chk");
+            request.setAttribute("mes", "Database Error: " + ex.getMessage());
+            Logger.getLogger(account.class.getName()).log(Level.SEVERE, null, ex);
+            RequestDispatcher rd = request.getRequestDispatcher("accounts.jsp");
+            rd.forward(request, response);
+        } finally {
             out.close();
         }
     }

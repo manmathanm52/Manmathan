@@ -162,7 +162,7 @@ if(request.getParameter("b1")!=null)
             
             
             rs=st.executeQuery("select mail from signup where mail='"+to[i]+"'");
-            if(rs.first())
+            if(rs.next())
             {
                 String text =t3;
                 String line="";
@@ -246,7 +246,13 @@ else
     RequestDispatcher rd=request.getRequestDispatcher("Send.jsp");
     rd.forward(request, response);
 }
-        } finally {            
+        } catch (Exception ex) {
+            request.setAttribute("chk", "chk");
+            request.setAttribute("mes", "Database Error: " + ex.getMessage());
+            Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
+            RequestDispatcher rd = request.getRequestDispatcher("Send.jsp");
+            rd.forward(request, response);
+        } finally {
             out.close();
         }
     }

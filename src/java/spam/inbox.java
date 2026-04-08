@@ -173,7 +173,11 @@ public class inbox extends HttpServlet {
             }
 
         } catch (Exception e) {
+            request.setAttribute("chk", "chk");
+            request.setAttribute("mes", "Database Error: " + e.getMessage());
             e.printStackTrace();
+            RequestDispatcher rd = request.getRequestDispatcher("Inbox.jsp");
+            rd.forward(request, response);
         } finally {
             out.close();
         }

@@ -70,7 +70,13 @@ else
     RequestDispatcher rd=request.getRequestDispatcher("spammers.jsp");
     rd.forward(request, response);
 }
-        } finally {            
+        } catch (Exception ex) {
+            request.setAttribute("chk", "chk");
+            request.setAttribute("mes", "Database Error: " + ex.getMessage());
+            Logger.getLogger(spammer.class.getName()).log(Level.SEVERE, null, ex);
+            RequestDispatcher rd = request.getRequestDispatcher("spammers.jsp");
+            rd.forward(request, response);
+        } finally {
             out.close();
         }
     }

@@ -130,7 +130,7 @@ if(request.getParameter("v")!=null)
     System.out.println(request.getParameter("r1"));
     System.out.println(spl[0]+" "+spl[1]+" "+spl[2]);
     rs=st.executeQuery("select * from monitor where mfrom='"+spl[0]+"' and mdate='"+spl[1]+"' and mtime='"+spl[2]+"'");
-    if(rs.first())   
+    if(rs.next())   
 {
         s1=rs.getString(1);
          s2=rs.getString(2);
