@@ -47,7 +47,7 @@ public class inbox extends HttpServlet {
 
             HttpSession so = request.getSession(true);
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true","avnadmin",System.getenv("DB_PASSWORD"));
+            Connection con = DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
             Statement st = con.createStatement();
             Statement st1 = con.createStatement();
             Statement st2 = con.createStatement();
@@ -175,7 +175,7 @@ public class inbox extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        } catch (Exception antigravityException) { out.println("<br><br><h3>Application Error:</h3><pre>"); antigravityException.printStackTrace(out); out.println("</pre>"); } finally {
             out.close();
         }
     }

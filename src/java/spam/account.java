@@ -48,7 +48,7 @@ public class account extends HttpServlet {
             AesEncryption aes=new AesEncryption();AESDecryption des=new AESDecryption();
             /* TODO output your page here. You may use following sample code. */
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true","avnadmin",System.getenv("DB_PASSWORD"));
+            con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
 st=con.createStatement();
 String r1=request.getParameter("r1");
 if(request.getParameter("b1")!=null)
@@ -86,7 +86,7 @@ else
     RequestDispatcher rd=request.getRequestDispatcher("accounts.jsp");
     rd.forward(request, response);
 }
-        } finally {            
+        } catch (Exception antigravityException) { out.println("<br><br><h3>Application Error:</h3><pre>"); antigravityException.printStackTrace(out); out.println("</pre>"); } finally {            
             out.close();
         }
     }

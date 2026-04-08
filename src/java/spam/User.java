@@ -49,7 +49,7 @@ public class User extends HttpServlet {
 Class.forName("com.mysql.cj.jdbc.Driver"); 
 AesEncryption aes=new AesEncryption();
 AESDecryption des=new AESDecryption();
-con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true","avnadmin",System.getenv("DB_PASSWORD"));
+con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
 st=con.createStatement();   
 String t1=request.getParameter("t1");
 String t2=request.getParameter("t2");
@@ -99,7 +99,7 @@ else
     RequestDispatcher rd=request.getRequestDispatcher("User.jsp");
     rd.forward(request, response);
 }
-        } finally {            
+        } catch (Exception antigravityException) { out.println("<br><br><h3>Application Error:</h3><pre>"); antigravityException.printStackTrace(out); out.println("</pre>"); } finally {            
             out.close();
         }
     }
