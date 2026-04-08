@@ -47,6 +47,7 @@ public class Signup extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             Connection con = DbConnection.getConnection();
             Statement st = con.createStatement();
+            ResultSet rs = null;
 String t1=request.getParameter("t1");
 String demo1=request.getParameter("demo1");
 String t2=request.getParameter("t2");
@@ -67,7 +68,7 @@ if(request.getParameter("b1")!=null)
     else
     {
         rs=st.executeQuery("select mail from signup where mail='"+t6+"'");
-        if(rs.first())
+        if(rs.next())
         {
             request.setAttribute("chk","chk");
         request.setAttribute("mes","Mail Id Already Exists");

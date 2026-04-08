@@ -43,11 +43,9 @@ public class Pass extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
-            Connection con=null;
-    Statement st=null;
-    ResultSet rs=null;  
             Connection con = DbConnection.getConnection();
             Statement st = con.createStatement();
+            ResultSet rs = null;
 String t1=request.getParameter("t1");
 String t2=request.getParameter("t2");
 String h1=request.getParameter("h1");    
