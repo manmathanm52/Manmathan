@@ -46,8 +46,7 @@ public class inbox extends HttpServlet {
             String url1;
 
             HttpSession so = request.getSession(true);
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
+            Connection con = DbConnection.getConnection();
             Statement st = con.createStatement();
             Statement st1 = con.createStatement();
             Statement st2 = con.createStatement();

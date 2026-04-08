@@ -4,6 +4,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
+<%@page import="spam.DbConnection"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,8 +68,7 @@ if(chk!=null)
 Connection con=null;
     Statement st=null;
     ResultSet rs=null;  
-Class.forName("com.mysql.jdbc.Driver");
-con=DriverManager.getConnection("jdbc:mysql://localhost:3306/spam","root","root");
+con=DbConnection.getConnection();
 st=con.createStatement();   
 String t1="",t2="",t3="",t4="",t5="",t6="",t7="",t8="";
 rs=st.executeQuery("select * from signup where mail='"+aes.toEncrypt(mail.getBytes())+"'");

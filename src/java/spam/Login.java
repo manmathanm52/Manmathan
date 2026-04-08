@@ -38,78 +38,81 @@ public class Login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    Connection con=null;
-    Statement st=null;
-    ResultSet rs=null;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             AesEncryption aes=new AesEncryption();AESDecryption des=new AESDecryption();
             /* TODO output your page here. You may use following sample code. */
-           Class.forName("com.mysql.cj.jdbc.Driver");
-con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
-st=con.createStatement();
-String t1=request.getParameter("t1");
-String t2=request.getParameter("t2");
-if(request.getParameter("b1")!=null)
-{
-    if(t1.equals("")||t2.equals(""))
-    {
-         request.setAttribute("chk","chk");
-        request.setAttribute("mes","Fill Required Fields");
-        RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
-        rd.forward(request, response);
-    }
-    else
-    {
-        if(t1.equals("admin") && t2.equals("admin"))
-        {
-            RequestDispatcher rd=request.getRequestDispatcher("Admin.jsp");
-        rd.forward(request, response);
-        }
-        else
-        {
-            String stat="";
-            rs=st.executeQuery("select * from signup where mail='"+aes.toEncrypt(t1.getBytes())+"' and pwd='"+aes.toEncrypt(t2.getBytes())+"'");
-        if(rs.first())
-        {
-            stat=rs.getString(9);
-            if(stat.equalsIgnoreCase("active"))
+            Connection con = DbConnection.getConnection();
+            Statement st = con.createStatement();
+            
+            String t1=request.getParameter("t1");
+            String t2=request.getParameter("t2");
+            if(request.getParameter("b1")!=null)
             {
-               HttpSession session=request.getSession(true);
-            session.setAttribute("name", des.toDeycrypt(rs.getString(1)));
-            session.setAttribute("mail", t1);
-            session.setAttribute("pass", t2);
-            System.out.println("mail"+t1);
-            RequestDispatcher rd=request.getRequestDispatcher("User.jsp");
-        rd.forward(request, response); 
+                if(t1.equals("")||t2.equals(""))
+                {
+                     request.setAttribute("chk","chk");
+                    request.setAttribute("mes","Fill Required Fields");
+                    RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
+                    rd.forward(request, response);
+                }
+                else
+                {
+                    if(t1.equals("admin") && t2.equals("admin"))
+                    {
+                        RequestDispatcher rd=request.getRequestDispatcher("Admin.jsp");
+                    rd.forward(request, response);
+                    }
+                    else
+                    {
+                        String stat="";
+                        ResultSet rs = st.executeQuery("select * from signup where mail='"+aes.toEncrypt(t1.getBytes())+"' and pwd='"+aes.toEncrypt(t2.getBytes())+"'");
+                    if(rs.next())
+                    {
+                        stat=rs.getString(9);
+                        if(stat.equalsIgnoreCase("active"))
+                        {
+                           HttpSession session=request.getSession(true);
+                        session.setAttribute("name", des.toDeycrypt(rs.getString(1)));
+                        session.setAttribute("mail", t1);
+                        session.setAttribute("pass", t2);
+                        System.out.println("mail"+t1);
+                        RequestDispatcher rd=request.getRequestDispatcher("User.jsp");
+                    rd.forward(request, response); 
+                        }
+                        else
+                        {
+                            request.setAttribute("chk","chk");
+                    request.setAttribute("mes","U have been blocked!");
+                    RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
+                    rd.forward(request, response);
+                        }
+                        
+                    }
+                    else
+                    {
+                    request.setAttribute("chk","chk");
+                    request.setAttribute("mes","Invalid Mail Id or Password");
+                    RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
+                    rd.forward(request, response);
+                    }
+                    }  
+                }
             }
             else
             {
-                request.setAttribute("chk","chk");
-        request.setAttribute("mes","U have been blocked!");
-        RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
-        rd.forward(request, response);
+                RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
+                rd.forward(request, response);
             }
-            
-        }
-        else
-        {
-        request.setAttribute("chk","chk");
-        request.setAttribute("mes","Invalid Mail Id or Password");
-        RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
-        rd.forward(request, response);
-        }
-        }  
-    }
-}
-else
-{
-    RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
-    rd.forward(request, response);
-}
+        } catch (Exception ex) {
+            request.setAttribute("chk","chk");
+            request.setAttribute("mes","Database Error: " + ex.getMessage());
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            RequestDispatcher rd=request.getRequestDispatcher("Login.jsp");
+            rd.forward(request, response);
         } finally {            
             out.close();
         }
@@ -128,13 +131,7 @@ else
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -149,13 +146,7 @@ else
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

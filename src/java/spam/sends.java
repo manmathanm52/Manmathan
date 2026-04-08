@@ -32,8 +32,7 @@ try {
 AesEncryption aes=new AesEncryption();
 AESDecryption des=new AESDecryption();
 
-Class.forName("com.mysql.cj.jdbc.Driver");
-con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
+con=DbConnection.getConnection();
 st=con.createStatement();
 
 String t1=request.getParameter("t1");

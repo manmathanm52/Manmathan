@@ -41,9 +41,6 @@ public class Send extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    Connection con=null;
-    Statement st=null,st1=null;
-    ResultSet rs,rs2,rs1,rs3,rs4,rs5=null;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -51,9 +48,10 @@ public class Send extends HttpServlet {
         try {   
             AesEncryption aes=new AesEncryption();AESDecryption des=new AESDecryption();
             /* TODO output your page here. You may use following sample code. */
-            Class.forName("com.mysql.cj.jdbc.Driver");
-con=DriverManager.getConnection("jdbc:mysql://mysql-240cfbf7-spamsql.i.aivencloud.com:21585/defaultdb?useSSL=true&allowPublicKeyRetrieval=true","avnadmin",System.getenv("DB_PASSWORD"));
-st=con.createStatement();
+            Connection con = DbConnection.getConnection();
+            Statement st = con.createStatement();
+            Statement st1 = null;
+            ResultSet rs,rs2,rs1,rs3,rs4,rs5=null;
 String t1=request.getParameter("t1");
 String t2=request.getParameter("t2");
 String t3=request.getParameter("t3");

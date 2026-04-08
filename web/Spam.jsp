@@ -1,7 +1,5 @@
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
+<%@page import="spam.DbConnection"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,9 +101,7 @@ try
  System.out.println("select * from mails where mto='"+name+"' and typ='spam' order by mdate desc,mtime desc");
 		int flag=0;  
 
-		String url="jdbc:mysql://localhost:3306/spam";
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection con1=DriverManager.getConnection(url,"root","root");
+		Connection con1=DbConnection.getConnection();
 		Statement st1=con1.createStatement();
 
 
@@ -139,9 +135,7 @@ try
 
 
         try {
-                String url = "jdbc:mysql://localhost:3306/spam";
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con1 = DriverManager.getConnection(url, "root", "root");
+                Connection con1 = DbConnection.getConnection();
                 Statement st1 = con1.createStatement();
                 String a11 = null, a12 = "", a13 = "";
                 HttpSession so = request.getSession(true);
